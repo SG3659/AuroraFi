@@ -1,11 +1,10 @@
 import { startOfMonth, addMonths, setHours, addDays, addWeeks, addYears } from "date-fns"
 import { RecurringIntervalEnum } from "../model/transaction.model.js";
-import { set } from "mongoose";
 export function calulateNextReportDate(lastSentDate?: Date): Date {
    const now = new Date();
    const lastSent = lastSentDate || now;
 
-   const nextDate = startOfMonth(addMonths(lastSent, 3));
+   const nextDate = startOfMonth(addMonths(lastSent, 1));
    nextDate.setHours(0, 0, 0, 0);
 
    // console.log(nextDate, "nextDate");
