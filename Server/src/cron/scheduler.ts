@@ -23,7 +23,7 @@ const scheduleJob = (name: string, time: string, job: Function) => {
 export const startJobs = () => {
    return [
       // run every  5 minutes   
-      scheduleJob("Transcation", "*/1 * * * *", processRecurringTransactions)
+      // scheduleJob("Transcation", "*/1 * * * *", processRecurringTransactions)
 
    ]
 }
