@@ -9,6 +9,8 @@ import authRouter from "./routes/auth.routes.js"
 import transactionRouter from "./routes/transaction.routes.js"
 import reportRouter from "./routes/report.routes.js"
 import { initializeCrons } from "./cron/index.js"
+import { getDateRange } from "./utils/date.js"
+import analyticsRoutes from "./routes/analytic.routes.js"
 dotenv.config()
 const app = express()
 
@@ -23,6 +25,7 @@ app.use(
 app.use("/api/v1", authRouter)
 app.use("/api/v1/transaction", transactionRouter)
 app.use("/api/v1/report", reportRouter)
+app.use("/api/v1/analytics", analyticsRoutes)
 app.use(errorHandler)
 app.listen(Env.PORT, async () => {
    await dbConnect();
