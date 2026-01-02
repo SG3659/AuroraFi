@@ -3,6 +3,8 @@ import UserModel from "../model/user.model.js";
 import { UnauthorizedException, NotFoundException, InternalServerException } from "../utils/app-error.js";
 import mongoose from "mongoose";
 import ReportSettingModel, { ReportFrequencyEnum } from "../model/report-setting.model.js";
+import TransactionModel from "../model/transaction.model.js";
+import ReportModel from "../model/report.model.js";
 import { calculateNextReportDate } from "../utils/helper.js"
 import { accessJwtToken, refreshJwtToken } from "../utils/jwt.js"
 import jwt, { type JwtPayload } from "jsonwebtoken"
@@ -109,5 +111,37 @@ const generateRefreshAndAccessToken = async (userId: string) => {
    }
    catch (error) {
       throw error;
+   }
+}
+
+export const logoutService = async (userId: string) => {
+   const user = await UserModel.findById(userId);
+   if (!user) {
+      throw new NotFoundException("User not found");
+   }
+   user.resetToken = null;
+   await user.save({ validateBeforeSave: false });
+}
+
+export const deleteAccountService = async (userId: string) => {
+   const session = await mongoose.startSession();
+   try {
+      await session.withTransaction(async () => {
+         // Delete all transactions for the user
+         await TransactionModel.deleteMany({ userId }).session(session);
+
+         // Delete all reports for the user
+         await ReportModel.deleteMany({ userId }).session(session);
+
+         // Delete report settings for the user
+         await ReportSettingModel.deleteMany({ userId }).session(session);
+
+         // Finally, delete the user
+         await UserModel.findByIdAndDelete(userId).session(session);
+      });
+   } catch (error) {
+      throw error;
+   } finally {
+      session.endSession();
    }
 }

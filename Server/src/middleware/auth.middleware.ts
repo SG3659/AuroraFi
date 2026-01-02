@@ -13,15 +13,14 @@ declare global {
 }
 const AuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
    try {
-      const token = req.header("Authorization");
+      const token = req.header("Authorization")?.replace("Bearer ", "") || req.cookies?.access;
 
       if (!token) {
          return res.status(401).json({ message: "Please login or Register." });
       }
 
-      const tokenWithoutBearer = token.replace("Bearer ", "");
 
-      const verified = jwt.verify(tokenWithoutBearer, Env.JWT_SECRET) as jwt.JwtPayload;
+      const verified = jwt.verify(token, Env.JWT_SECRET) as jwt.JwtPayload;
       const user = await User.findById(verified.userId).select("-password");
 
       if (!user) {
