@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express"
 import { asyncHandler } from "../middleware/asyncHandler.middleware.js";
 import { HTTPSTATUS } from "../config/http.config.js";
-import { registerSchema, loginSchema } from "../validators/auth.validator.js";
-import { registerService, loginService, refereshTokenService, logoutService, deleteAccountService } from "../services/auth.service.js";
+import { registerSchema, loginSchema, updatePasswordSchema } from "../validators/auth.validator.js";
+import { registerService, loginService, refereshTokenService, logoutService, deleteAccountService, updatePasswordService } from "../services/auth.service.js";
 export const registerController = asyncHandler(
    async (req: Request, res: Response) => {
       const body = registerSchema.parse(req.body);
@@ -71,4 +71,11 @@ export const deleteAccountController = asyncHandler(async (req: Request, res: Re
    const userId = req.auth._id;
    await deleteAccountService(userId)
    return res.status(HTTPSTATUS.OK).json({ message: "Account deleted successfully" })
+})
+
+export const updatePasswordController = asyncHandler(async (req: Request, res: Response) => {
+   const userId = req.auth._id;
+   const body = updatePasswordSchema.parse(req.body);
+   await updatePasswordService(userId, body)
+   return res.status(HTTPSTATUS.OK).json({ message: "Password updated successfully" })
 })

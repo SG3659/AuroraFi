@@ -1,4 +1,4 @@
-import type { registerSchemaType, loginSchemaType } from "../validators/auth.validator.js"
+import type { registerSchemaType, loginSchemaType, updatePasswordType } from "../validators/auth.validator.js"
 import UserModel from "../model/user.model.js";
 import { UnauthorizedException, NotFoundException, InternalServerException } from "../utils/app-error.js";
 import mongoose from "mongoose";
@@ -144,4 +144,15 @@ export const deleteAccountService = async (userId: string) => {
    } finally {
       session.endSession();
    }
+}
+
+export const updatePasswordService = async (userId: string, body: updatePasswordType) => {
+   const user = await UserModel.findById(userId).select("+password");
+   if (!user) {
+      throw new NotFoundException("User not found");
+   }
+   const isPasswordValid = await user.comparePassword(body.oldPassword);
+   if (!isPasswordValid) throw new UnauthorizedException("Old password is incorrect");
+   user.password = body.newPassword;
+   await user.save({ validateBeforeSave: false });
 }
