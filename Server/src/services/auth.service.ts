@@ -1,5 +1,6 @@
 import type { registerSchemaType, loginSchemaType, updatePasswordType } from "../validators/auth.validator.js"
 import UserModel from "../model/user.model.js";
+import OtpModel from "../model/otp.model.js";
 import { UnauthorizedException, NotFoundException, InternalServerException } from "../utils/app-error.js";
 import mongoose from "mongoose";
 import ReportSettingModel, { ReportFrequencyEnum } from "../model/report-setting.model.js";
@@ -9,6 +10,9 @@ import { calculateNextReportDate } from "../utils/helper.js"
 import { accessJwtToken, refreshJwtToken } from "../utils/jwt.js"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import { Env } from "../config/env.config.js";
+import { sendOtpEmail } from "../mailers/otp.mailer.js";
+import { generateOtp } from "../utils/otp-generator.js";
+import type { otpSchemaType } from "../validators/otp.validator.js";
 export const registerService = async (body: registerSchemaType) => {
    const { email } = body
 
@@ -51,29 +55,81 @@ export const loginService = async (body: loginSchemaType) => {
    //password check
    //access and referesh token
    //send cookie
+
    const { email, password } = body
+   // const session = await mongoose.startSession();
+   // try {
+   //    await session.withTransaction(async () => {
+   await OtpModel.findOneAndDelete({ email });
+
    const user = await UserModel.findOne({ email })
    if (!user) {
       throw new NotFoundException("User not found")
    }
    const isPasswordValid = await user.comparePassword(password);
    if (!isPasswordValid) throw new UnauthorizedException("Invalid password");
+   const otp = generateOtp()
 
-   const { refreshTokenData, accessTokenData } = await generateRefreshAndAccessToken(user.id);
-   const reportSetting = await ReportSettingModel.findOne(
-      {
-         userId: user.id,
-      },
+   await sendOtpEmail(email, otp);
+
+   let otpRecord = await OtpModel.findOne({ email });
+   if (otpRecord) {
+      otpRecord.otp = otp;
+      otpRecord.otp_expireAt = new Date(Date.now() + 10 * 60 * 1000);
+      await otpRecord.save();
+   } else {
+      otpRecord = new OtpModel({
+         email,
+         otp,
+         otp_expireAt: new Date(Date.now() + 10 * 60 * 1000)
+      });
+      await otpRecord.save();
+   }
+
+
+   const reportSetting =  await ReportSettingModel.findOne(
+      { userId: user.id },
       { _id: 1, frequency: 1, isEnabled: 1 }
    ).lean();
 
    return {
       user: user.omitPassword(),
+      reportSetting,
+   }
+}
+export const otpVerifyService = async (body: otpSchemaType) => {
+   const { email, otp } = body;
+
+   const otpRecord = await OtpModel.findOne({ email });
+   if (!otpRecord) {
+      throw new UnauthorizedException("Invalid email");
+   }
+
+
+
+
+   if (otpRecord.otp_expireAt < new Date()) {
+      throw new UnauthorizedException("OTP has expired");
+   }
+   const isOtpValid = await otpRecord.compareOtp(otp);
+   if (!isOtpValid) {
+      throw new UnauthorizedException("Invalid OTP");
+   }
+
+   const user = await UserModel.findOne({ email });
+   if (!user) {
+      throw new NotFoundException("User not found");
+   }
+
+   const { refreshTokenData, accessTokenData } = await generateRefreshAndAccessToken(user.id);
+
+   await OtpModel.findOneAndDelete({ email });
+
+
+   return {
       access: accessTokenData,
       refresh: refreshTokenData,
-      reportSetting,
-
-   }
+   };
 }
 
 export const refereshTokenService = async (incomingRefreshToken: string) => {

@@ -26,7 +26,7 @@ type Params = {
    from?: string;
 };
 
-const mailer_sender = `FINORA <${Env.EMAIL}>`;
+const mailer_sender = `AuroraFI <${Env.EMAIL}>`;
 
 export const sendEmail = async ({
    to,

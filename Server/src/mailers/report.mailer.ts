@@ -2,6 +2,7 @@ import { formatCurrency } from "../utils/format-currency.js";
 import { getReportEmailTemplate } from "./templates/report.template.js";
 import { sendEmail } from "./mailer.js";
 import type { ReportEmailParams } from "../@types/report.email.types.js";
+// this funcion using in cron
 export const sendReportEmail = async (params: ReportEmailParams) => {
    const { email, username, report, frequency } = params;
    const html = getReportEmailTemplate(
