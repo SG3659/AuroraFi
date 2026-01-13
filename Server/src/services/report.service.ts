@@ -130,7 +130,7 @@ export const genrateReportService = async (UserId: string,
                $arrayElemAt: ["$summary.totalIncome", 0],
             },
             totalExpenses: {
-               $arrayElemAt: ["$summary.totalExpenses", 0],
+               $arrayElemAt: ["$summary.totalExpense", 0],
             },
             categories: 1,
          }
@@ -150,7 +150,7 @@ export const genrateReportService = async (UserId: string,
       categories = [],
    } = results[0] || {};
 
-   // console.log(results[0], "results");
+   console.log(results[0], "results");
    const byCategory = categories.reduce(
       (acc: any, { _id, total }: any) => {
          acc[_id] = {
