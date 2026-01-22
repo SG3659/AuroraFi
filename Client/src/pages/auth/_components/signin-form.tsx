@@ -14,9 +14,11 @@ import {
    FormMessage,
 } from "@/components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
-import { AUTH_ROUTES } from '@/routes/common/routePath'
+import { AUTH_ROUTES, PROTECTED_ROUTES } from '@/routes/common/routePath'
 import { useLoginMutation, useOtpVerifyMutation, } from "@/api/auth/authApi"
 import { toast } from "sonner"
+import { setCredentials } from '@/redux/slice/authSlice'
+import { useDispatch } from 'react-redux'
 
 const loginSchema = z.object({
    email: z.string().email("Invalid email address"),
@@ -40,6 +42,7 @@ type OtpFormValues = z.infer<typeof otpSchema>;
 const SignInForm = ({ className }: React.ComponentPropsWithoutRef<"form">) => {
    const navigate = useNavigate()
    const [isOTPRequested, setIsOTPRequested] = useState(false);
+   const dispatch = useDispatch()
    const [email, setEmail] = useState("   ");
    // const [isOTPRequested, setIsOTPRequested] = useState(true);
    // const [email, setEmail] = useState("sahilgupta43384@gmail.com");
@@ -82,13 +85,13 @@ const SignInForm = ({ className }: React.ComponentPropsWithoutRef<"form">) => {
 
    const onOtpSubmit = async (values: OtpFormValues) => {
       try {
-         console.log(email)
          const result = await otpVerify({ email, otp: values.otp }).unwrap();
          toast.success("Login successful!");
-         // Store tokens in localStorage or cookie
-         localStorage.setItem("access_token", result.access);
-         localStorage.setItem("refresh_token", result.refresh);
-         navigate("/dashboard");
+         dispatch(setCredentials(result))
+         setTimeout(() => {
+            navigate(PROTECTED_ROUTES.OVERVIEW)
+         }, 1000)
+
       } catch (error) {
          const errorMessage = (error as { data?: { message?: string } })?.data?.message || "Invalid OTP";
          toast.error(errorMessage);
