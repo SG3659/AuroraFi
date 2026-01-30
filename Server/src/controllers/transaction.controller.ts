@@ -38,8 +38,8 @@ export const getAllTransactionController = asyncHandler(
       };
 
       const pagination = {
-         pageSize: parseInt(req.query.limit as string) || 20,// set the page limit 
-         pageNumber: parseInt(req.query.page as string) || 1,
+         pageSize: parseInt(req.query.pageSize as string) || 10,// set the page limit 
+         pageNumber: parseInt(req.query.pageNumber as string) || 1,
       }
       const result = await getAllTransactionService(UserId, filters, pagination)
       return res.status(HTTPSTATUS.OK).json({ message: "Transaction Fetch successfully", ...result })

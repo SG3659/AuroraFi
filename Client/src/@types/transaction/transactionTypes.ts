@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 
 type PaymentMethodType =
-  (typeof _PaymentMethodsEnum)[keyof typeof _PaymentMethodsEnum];
+   (typeof _PaymentMethodsEnum)[keyof typeof _PaymentMethodsEnum];
 
 export const Categories = [
    { value: "groceries", label: "Groceries" },
@@ -135,7 +135,7 @@ export interface DataTableProps<TData> {
 export interface DataTablePaginationProps {
    pageNumber: number;
    pageSize: number;
-   totalCount: number; // Total rows from the API
+   totalCount: number;
    totalPages: number;
    onPageChange?: (page: number) => void;
    onPageSizeChange?: (size: number) => void;
@@ -189,16 +189,16 @@ export type TransactionField = {
 
 
 export interface BulkTransactionType {
-  title: string;
-  type: _TransactionType;
-  amount: number;
-  category: string;
-  description: string;
-  date: string;
-  paymentMethod: PaymentMethodType;
-  isRecurring: boolean;
+   title: string;
+   type: _TransactionType;
+   amount: number;
+   category: string;
+   description: string;
+   date: string;
+   paymentMethod: PaymentMethodType;
+   isRecurring: boolean;
 }
 
 export interface BulkImportTransactionPayload {
-  transactions: BulkTransactionType[];
+   transactions: BulkTransactionType[];
 }
