@@ -4,7 +4,9 @@ import AUTHROUTE from "./authRoutes"
 import PROTECTEDROUTE from './protectedRoutes'
 import AppLayout from '@/layouts/app-layout'
 import BaseLayout from '@/layouts/base-layout'
+import useAuthExpiration from '@/hook/use-auth-expiration'
 const AppRoutes = () => {
+   useAuthExpiration();
    return (
       <BrowserRouter>
          <Routes>

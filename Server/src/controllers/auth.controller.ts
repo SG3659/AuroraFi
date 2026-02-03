@@ -53,11 +53,13 @@ export const refreshTokenController = asyncHandler(async (req: Request, res: Res
    if (!refreshToken) {
       return res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: "No refresh token provided" });
    }
-   const { accessToken, newRefreshToken } = await refereshTokenService(refreshToken);
+   const { accessToken, newRefreshToken, tokenExpiresAt, refreshExpiresAt } = await refereshTokenService(refreshToken);
    return res
       .status(HTTPSTATUS.OK)
-      .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
-      .json({ message: "Refresh token successfully", accessToken });
+      .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "none" })
+      .cookie("access", accessToken, { httpOnly: true, secure: true, sameSite: "none" })
+      .json({ message: "Refresh token successfully", accessToken, refreshToken: newRefreshToken, expiresAt: tokenExpiresAt, refreshExpiresAt });
+
 })
 
 
