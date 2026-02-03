@@ -306,7 +306,7 @@ const ActionsCell = ({ row }: { row: any }) => {
             {isRecurring && (
                <>
                   <DropdownMenuItem>
-                     <StopCircleIcon className="mr-1 h-4 w-4" />
+                     <StopCircleIcon className="mr-1 h-4 w-4"  />
                      Stop Recurring
                   </DropdownMenuItem>
                </>

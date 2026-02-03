@@ -58,7 +58,7 @@ body {
 :root {
   --bg-color: #f6f7f9;
   --secondary-dark-color: #1a1e2a;
-  --max-width: 78rem;
+  --max-width: 85rem;
   --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -96,7 +96,7 @@ body {
 .dark {
   --bg-color: #f6f7f9;
   --secondary-dark-color: #1a1e2a;
-  --max-width: 78rem;
+  --max-width: 85rem;
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);

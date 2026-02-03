@@ -104,17 +104,18 @@ const DataTable = <TData extends Record<string, any>>({
   return (
     <div className="w-full">
       {/* Top Bar: Search & Filters */}
-      <div className="flex flex-wrap justify-between items-center gap-2 pb-4">
-        <div className="flex items-center gap-2 flex-wrap flex-1">
+      <div className="flex  items-center justify-start gap-2 pb-4 flex-1">
+        <div className="flex flex-row  gap-2 ">
           {showSearch && (
             <Input
               placeholder={searchPlaceholder}
               value={search}
               disabled={isLoading}
               onChange={(e) => setSearch?.(e.target.value)}
-              className="max-w-sm"
+              className="max-w-sm "
             />
           )}
+
           {/* Filters */}
           {filters.map(({ key, label, options }) => (
             <Select
@@ -129,6 +130,7 @@ const DataTable = <TData extends Record<string, any>>({
                   <SelectValue placeholder={label} />
                 </div>
               </SelectTrigger>
+
               <SelectContent>
                 {options.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
@@ -138,7 +140,6 @@ const DataTable = <TData extends Record<string, any>>({
               </SelectContent>
             </Select>
           ))}
-
 
           {(search ||
             Object.keys(rowSelection).length > 0 ||
@@ -154,19 +155,24 @@ const DataTable = <TData extends Record<string, any>>({
               </Button>
             )}
         </div>
+
         {(selection && hasSelections) || isBulkDeleting ? (
           <Button
             disabled={isLoading || isBulkDeleting}
             variant="destructive"
             size="sm"
             onClick={handleDelete}
+            className="w-auto"
           >
             <Trash className="h-4 w-4 mr-1" />
             Delete ({selectedRows.length})
-            {isBulkDeleting && <Loader className="ml-1 h-4 w-4 animate-spin" />}
+            {isBulkDeleting && (
+              <Loader className="ml-1 h-4 w-4 animate-spin" />
+            )}
           </Button>
         ) : null}
       </div>
+
 
       {/* Table */}
       <div className={cn("rounded-md border overflow-x-auto", className)}>
