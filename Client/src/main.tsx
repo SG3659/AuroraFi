@@ -14,9 +14,9 @@ createRoot(document.getElementById('root')!).render(
         <App />
       </NuqsAdapter>
       <Toaster
-        position="top-center"
+        position="bottom-right"
         expand={true}
-        duration={5000}
+        duration={3000}
         richColors
         closeButton
       />

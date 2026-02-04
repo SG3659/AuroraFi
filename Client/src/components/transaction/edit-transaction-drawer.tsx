@@ -12,7 +12,7 @@ const EditTransactionDrawer = () => {
    const { open, transactionId, onCloseDrawer } =
       useEditTransactionDrawer();
    return (
-      <Drawer open={open} onOpenChange={onCloseDrawer} direction="right">
+      <Drawer open={open} onOpenChange={onCloseDrawer} direction="left">
          <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
             <DrawerHeader>
                <DrawerTitle className="text-xl font-semibold">
@@ -22,7 +22,7 @@ const EditTransactionDrawer = () => {
                   Edit a transaction to track your finances
                </DrawerDescription>
             </DrawerHeader>
-            <TransactionForm isEdit transactionId={transactionId}
+            <TransactionForm isEdit={true} transactionId={transactionId}
                onCloseDrawer={onCloseDrawer}
             />
          </DrawerContent>

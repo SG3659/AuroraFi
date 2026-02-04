@@ -175,7 +175,7 @@ const DataTable = <TData extends Record<string, any>>({
 
 
       {/* Table */}
-      <div className={cn("rounded-md border overflow-x-auto", className)}>
+      <div className={cn("rounded-md border overflow-x-auto flex-shrink-0", className)}>
         {isLoading ? (
           <TableSkeleton columns={6} rows={20} />
         ) : (
@@ -190,7 +190,7 @@ const DataTable = <TData extends Record<string, any>>({
                   {group.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="!font-medium !text-[13px]"
+                      className="!font-bold !text-[13.2px]"
                     >
                       {flexRender(
                         header.column.columnDef.header,
