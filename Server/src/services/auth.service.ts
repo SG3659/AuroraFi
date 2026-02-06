@@ -166,12 +166,11 @@ const generateRefreshAndAccessToken = async (userId: string) => {
 }
 
 export const logoutService = async (userId: string) => {
-   const user = await UserModel.findById(userId);
-   if (!user) {
-      throw new NotFoundException("User not found");
-   }
-   user.resetToken = null;
-   await user.save({ validateBeforeSave: false });
+   await UserModel.findByIdAndUpdate(
+      userId,
+      { $set: { refreshToken: null } },
+      { new: true }
+   );
 }
 
 export const deleteAccountService = async (userId: string) => {

@@ -73,6 +73,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       header: ({ column }) => (
          <Button
             variant="ghost"
+            className="!pl-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
          >
             Date Created
@@ -104,10 +105,11 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       header: ({ column }) => (
          <Button
             variant="ghost"
+            className="!p-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
          >
             Type
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <ArrowUpDown className="ml-0 h-4 w-4" />
          </Button>
       ),
       cell: ({ row }) => (
@@ -151,13 +153,16 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       header: ({ column }) => (
          <Button
             variant="ghost"
+             className="!pl-10"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
          >
             Transaction Date
             <ArrowUpDown className="ml-2 h-4 w-4" />
          </Button>
       ),
-      cell: ({ row }) => format(row.original.date, "MMM dd, yyyy"),
+      cell: ({ row }) =>
+         <div className="text-center">{format(row.original.date, "MMM dd, yyyy")}</div>
+
    },
    {
       accessorKey: "paymentMethod",

@@ -7,7 +7,6 @@ import Logo from "../logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { UserNav } from "./user-nav";
-// import LogoutDialog from "./logout-dialog";
 import { useTypedSelector } from "@/redux/hook";
 
 const Navbar = () => {
@@ -15,7 +14,6 @@ const Navbar = () => {
    const { user } = useTypedSelector((state) => state.auth);
 
    const [isOpen, setIsOpen] = useState(false);
-   // const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
    const routes = [
       {
@@ -35,19 +33,18 @@ const Navbar = () => {
       //    label: "Settings",
       // },
    ];
-
    return (
       <>
          <header
             className={cn(
-               "w-full px-4 py-3 pb-3 lg:px-14 bg-[var(--secondary-dark-color)] text-white ",
+               "w-full px-4 py-3 pb-3 lg:px-14 bg-[var(--secondary-dark-color)]  shadow-sm sticky top-0 z-30",
                pathname === PROTECTED_ROUTES.OVERVIEW && "!pb-3"
             )}
          >
             <div className="w-full flex h-14 max-w-[var(--max-width)] items-center mx-auto">
                <div className="w-full flex items-center  md:justify-between">
                   <Logo />
-                  <div className="md:hidden  items-center gap-4  md:gap-1">
+                  {/* <div className="md:hidden  items-center gap-4  md:gap-1">
                      <Button
                         variant="ghost"
                         size="icon"
@@ -58,7 +55,7 @@ const Navbar = () => {
                         <Menu className="h-6 w-6" />
                      </Button>
 
-                  </div>
+                  </div> */}
 
                   {/* Navigation*/}
                   <div className="  md:flex   items-center gap-x-2 overflow-x-auto">
@@ -68,21 +65,13 @@ const Navbar = () => {
                            size="sm"
                            variant="ghost"
                            className={cn(
-                              `w-full lg:w-auto font-normal py-4.5
-                     hover:text-white border-none
-                     text-white/60 focus:bg-white/30
-                     transition !bg-transparent text-sm
-                     `,
-                              pathname === route.href && "text-white"
+                              `w-full lg:w-auto font-medium py-4.5  transition  text-gray-400 text-lg  border-none`,
+                              pathname === route.href && "text-gray-800  "
                            )}
                            asChild
                         >
                            <NavLink to={route.href}>
-                              {({ isActive }) => (
-                                 <span className={cn(isActive && "text-white")}>
-                                    {route.label}
-                                 </span>
-                              )}
+                              {route.label}
                            </NavLink>
                         </Button>
                      ))}
@@ -125,17 +114,12 @@ const Navbar = () => {
                         userName={user?.name || ""}
                         email={user?.email || ""}
                         profilePicture={user?.profilePicture || ""}
-                        onLogout={() => setIsLogoutDialogOpen(true)}
+                        id={user?._id || ""}
                      />
                   </div>
                </div>
             </div>
          </header >
-
-         {/* <LogoutDialog
-        isOpen={isLogoutDialogOpen}
-        setIsOpen={setIsLogoutDialogOpen}
-      /> */}
       </>
    );
 };

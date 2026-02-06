@@ -5,7 +5,7 @@ import EditTransactionDrawer from "@/components/transaction/edit-transaction-dra
 const AppLayout = () => {
    return (
       <>
-         <div className="min-h-screen pb-10">
+         <div className="min-h-screen pb-10 mx-auto">
             <Navbar />
             <main className="w-full max-w-full">
                <Outlet />

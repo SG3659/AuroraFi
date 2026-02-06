@@ -29,11 +29,11 @@ export const otpVerifyController = asyncHandler(async (req: Request, res: Respon
    const options: {
       httpOnly: boolean,
       secure: boolean,
-      sameSite: "none"
+      sameSite: "strict",
    } = {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "strict",
    }
    const { accessToken,
       refreshToken,
@@ -72,9 +72,12 @@ export const logoutController = asyncHandler(async (req: Request, res: Response)
    const options: {
       httpOnly: boolean,
       secure: boolean
+      sameSite?: "strict"
    } = {
       httpOnly: true,
-      secure: true
+      secure: true,
+      sameSite: "strict" as const,
+
    }
    return res
       .status(HTTPSTATUS.OK)

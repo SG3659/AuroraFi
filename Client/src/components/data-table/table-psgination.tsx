@@ -32,7 +32,7 @@ export const DataTablePagination = ({
 
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 px-2">
-         <div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-x-8 lg:space-y-0">
+         <div className="flex lg:flex-row lg:items-center space-y-2 lg:space-x-8 lg:space-y-0">
             {/* Rows Per Page Selector */}
             <div className="flex items-center space-x-2">
                <p className="text-sm font-medium">Rows per page</p>
