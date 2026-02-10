@@ -5,7 +5,6 @@
 
 * 🔐 Authentication (Email + Password with JWT)
 * 🏢 Create & Edit Transactions
-* 📤 Upload & Scan Receipt with AI
 * 📈 Beautiful Advanced Analytics  (MongoDB Aggregate Pipeline)
 * 📊 Expenses Breakdown Pie Chart
 * 📈 Income & Expense Line Chart
