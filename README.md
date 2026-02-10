@@ -1,5 +1,5 @@
 
-# 🌟 MERN AI Finance SaaS Platform - FINORA
+# 🌟 MERN AI Finance SaaS Platform - AuroraFi
 
 ## 🗝️ Key Features: 👇
 
