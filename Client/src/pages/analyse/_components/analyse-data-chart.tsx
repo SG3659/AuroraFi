@@ -55,10 +55,9 @@ const AnalyseDataChart: React.FC<PropsType> = (props) => {
    }
 
    return (
-      <Card className="!shadow-none border-1 border-gray-100 dark:border-border !pt-0">
+      <Card className="!shadow-none border-1 border-gray-200 !pt-0">
          <CardHeader
-            className="flex  items-stretch !space-y-0 border-b border-gray-100
-      dark:border-border !p-0 pr-1 flex-row"
+            className="flex  items-stretch !space-y-0 border-b border-gray-200 !p-0 pr-1 flex-row"
          >
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-0 sm:py-0">
                <CardTitle className="text-lg">Transaction Overview</CardTitle>
@@ -73,7 +72,7 @@ const AnalyseDataChart: React.FC<PropsType> = (props) => {
                      <div
                         key={chart}
                         className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-center even:border-l 
-                sm:border-l border-gray-100 dark:border-border sm:px-4 sm:py-6 min-w-36"
+                sm:border-l border-gray-200  sm:px-4 sm:py-6 min-w-36"
                      >
                         <span className="w-full block text-xs text-muted-foreground">
                            No of {chartConfig[chart].label}

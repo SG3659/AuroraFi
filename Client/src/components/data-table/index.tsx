@@ -177,7 +177,7 @@ const DataTable = <TData extends Record<string, any>>({
       {/* Table */}
       <div className={cn("rounded-md border overflow-x-auto flex-shrink-0", className)}>
         {isLoading ? (
-          <TableSkeleton columns={6} rows={20} />
+          <TableSkeleton columns={6} rows={8} />
         ) : (
           <Table
             className={cn(

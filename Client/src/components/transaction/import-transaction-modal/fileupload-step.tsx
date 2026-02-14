@@ -119,7 +119,7 @@ const FileUploadStep = ({ onFileUpload }: FileUploadStepProps) => {
 
             <Button
                size="lg"
-               className="!bg-[var(--secondary-dark-color)] text-white min-w-44"
+               className="!bg-primary text-white min-w-44"
                onClick={() => fileInputRef.current?.click()}
                disabled={isLoading}
             >

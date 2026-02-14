@@ -14,7 +14,7 @@ const PageHeader = ({ title, subtitle, rightAction, renderPageHeader }: PageHead
             {renderPageHeader
                ? <Fragment>{renderPageHeader}</Fragment>
                : (
-                  <div className="w-full flex flex-col gap-3 items-start justify-start lg:items-center lg:flex-row lg:justify-between">
+                  <div className="w-full flex  gap-3   items-center flex-row justify-between">
                      {(title || subtitle) && (
                         <div className="space-y-1">
                            {title && <h2 className="text-2xl lg:text-4xl font-medium">{title}</h2>}

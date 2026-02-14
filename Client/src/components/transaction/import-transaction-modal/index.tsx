@@ -9,7 +9,7 @@ import FileUploadStep from "./fileupload-step";
 import ColumnMappingStep from "./column-mapping-step";
 import { CsvColumn, TransactionField } from "@/@types/transaction/transactionTypes";
 import ConfirmationStep from "./confirmation-step";
-
+import { cn } from "@/lib/utils";
 
 const ImportTransactionModal = () => {
    const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -96,6 +96,7 @@ const ImportTransactionModal = () => {
 
    return (
       <Dialog open={open} onOpenChange={handleClose}>
+
          <Button
             variant="outline"
             className="!shadow-none !cursor-pointer !border-gray-200
@@ -105,11 +106,15 @@ const ImportTransactionModal = () => {
             <ImportIcon className="!w-5 !h-5" />
             Bulk Import
          </Button>
-         <DialogContent className="max-w-2xl min-h-[4vh] ">
-            {renderStep()}
+         <DialogContent className="grid place-items-center min-h-[300px]">
+            <div className="w-full max-w-md">
+               {renderStep()}
+            </div>
          </DialogContent>
 
-      </Dialog>
+
+      </Dialog >
+  
    );
 };
 

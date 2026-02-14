@@ -77,7 +77,7 @@ const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
 
 
    return (
-      <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
+      <Card className="!shadow-none border-1 border-gray-200 ">
          <CardHeader className="pb-2">
             <CardTitle className="text-lg">Expenses Breakdown</CardTitle>
             <CardDescription>Total expenses {dateRange?.label}</CardDescription>

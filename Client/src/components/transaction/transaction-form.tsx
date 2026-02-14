@@ -161,7 +161,7 @@ const TransactionForm = (props: {
       })
    );
    return (
-      <div className="relative pb-10 pt-5 px-2.5">
+      <div className="relative pb-10 pt-5 px-2.5 flex-1 overflow-y-auto hide-scroll">
          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
                <div className="space-y-6">
@@ -455,7 +455,7 @@ const TransactionForm = (props: {
                   />
                </div>
 
-               <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
+               <div className=" bottom-0 bg-white dark:bg-background ">
                   <Button
                      type="submit"
                      className="w-full !text-white"

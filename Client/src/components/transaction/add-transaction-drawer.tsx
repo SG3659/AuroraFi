@@ -9,6 +9,7 @@ import {
    DrawerTitle,
    DrawerTrigger,
 } from "@/components/ui/drawer";
+
 import { PlusIcon, XIcon } from "lucide-react";
 import TransactionForm from "./transaction-form";
 const AddTransactionDrawer = () => {
@@ -24,7 +25,7 @@ const AddTransactionDrawer = () => {
                Add Transaction
             </Button>
          </DrawerTrigger>
-         <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
+         <DrawerContent className="max-h-screen w-full max-w-md   ">
             <DrawerHeader className="relative">
                <div>
                   <DrawerTitle className="text-xl font-semibold">
@@ -43,6 +44,8 @@ const AddTransactionDrawer = () => {
             />
          </DrawerContent>
       </Drawer>
+
+
    )
 }
 
