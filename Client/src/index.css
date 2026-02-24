@@ -57,7 +57,7 @@ body {
 :root {
   --bg-color: #f6f7f9;
   --secondary-dark-color: #fefefe;
-  --max-width: 75rem;
+  --max-width: 85rem;
   --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
