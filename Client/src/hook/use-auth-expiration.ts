@@ -11,7 +11,6 @@ const useAuthExpiration = () => {
   useEffect(() => {
     if (!refreshToken || !expiresAt || !refreshExpireAt) return;
     const handleLogout = () => {
-      console.log("Token expired, logging out...");
       dispatch(logout());
     };
     if (refreshExpireAt && Date.now() >= new Date(refreshExpireAt).getTime()) {
@@ -26,9 +25,9 @@ const useAuthExpiration = () => {
     const refreshTimeout = setTimeout(async () => {
       try {
         const {
-          refreshToken: newRefreshToken,
-          expiresAt: newExpiresAt,
-          refreshExpiresAt: newRefreshExpiresAt,
+          newRefreshToken,
+          newExpiresAt,
+          newRefreshExpiresAt,
         } = await refreshExpire({}).unwrap();
 
         dispatch(
