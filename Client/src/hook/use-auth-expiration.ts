@@ -35,7 +35,7 @@ const useAuthExpiration = () => {
           updateCredentials({
             refreshToken: newRefreshToken,
             expiresAt: newExpiresAt,
-            refreshExpiresAt: newRefreshExpiresAt,
+            refreshExpireAt: newRefreshExpiresAt,
           })
         );
 

@@ -136,9 +136,6 @@ export const refereshTokenService = async (incomingRefreshToken: string) => {
       if (!user) {
          throw new NotFoundException("User not found");
       }
-      if (incomingRefreshToken !== user.resetToken) {
-         throw new UnauthorizedException("refreshToken mismatch")
-      }
       const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id)
       return { accessToken: accessToken, newRefreshToken: refreshToken, tokenExpiresAt, refreshExpiresAt }
 
@@ -168,7 +165,7 @@ const generateRefreshAndAccessToken = async (userId: string) => {
 export const logoutService = async (userId: string) => {
    await UserModel.findByIdAndUpdate(
       userId,
-      { $set: { refreshToken: null } },
+      { $set: { resetToken: null } },
       { new: true }
    );
 }
