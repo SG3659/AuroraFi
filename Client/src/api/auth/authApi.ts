@@ -35,6 +35,7 @@ export const authApi = apiClient.injectEndpoints({
          query: () => ({
             url: "/refresh",
             method: "POST",
+            credentials: "include",
          }),
       }),
    }),

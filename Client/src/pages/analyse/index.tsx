@@ -21,13 +21,13 @@ const Analyse = () => {
                />
             }
          >
-            <div className="w-full grid grid-cols-6 gap-8">
-               <div className="lg:col-span-4">
+            <div className="w-full grid grid-cols-1 gap-8">
+               <div className="col-span-4">
                   <AnalyseDataChart dateRange={dateRange} />
                </div>
-               <div className="lg:col-span-2">
+               {/* <div className="col-span-4">
                   <ExpensePieChart dateRange={dateRange} />
-               </div>
+               </div> */}
             </div>
          </PageLayout>
 

@@ -21,12 +21,12 @@ export function UserNav({
    userName,
    email,
    profilePicture,
-   id
+
 }: {
    userName: string;
    email: string;
    profilePicture: string;
-   id: string;
+
 }) {
    const [logoutApi] = useLogoutMutation();
    const dispatch = useAppDispatch();
@@ -76,15 +76,6 @@ export function UserNav({
                </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="!bg-gray " />
-            {/* <DropdownMenuGroup >
-               <DropdownMenuItem className=" text-foreground hover:!bg-gray "
-                  onClick={onLogout}
-               >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Log out
-               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator className="!bg-gray " /> */}
             <DropdownMenuGroup >
                <DropdownMenuItem className=" text-foreground hover:!bg-gray"
                   onClick={handleLogout}

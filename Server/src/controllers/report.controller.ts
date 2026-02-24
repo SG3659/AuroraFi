@@ -6,13 +6,13 @@ import { updateReportSettingSchema } from "../validators/report.validator.js";
 import { updateReoprtService, genrateReportService } from "../services/report.service.js";
 export const getAllReportController = asyncHandler(
    async (req: Request, res: Response) => {
-      const UserId = req.auth?._id;
+      const userId = req.auth?._id;
       const pagination = {
          pageSize: parseInt(req.query.pageSize as string) || 10,// set the page limit
          pageNumber: parseInt(req.query.pageNumber as string) || 1,
       }
-      const result = await getAllReportService(UserId, pagination)
-      return res.status(HTTPSTATUS.OK).json({ message: "Report Fetch successfully", data: result })
+      const result = await getAllReportService(userId, pagination)
+      return res.status(HTTPSTATUS.OK).json({ message: "Report Fetch successfully", ...result })
    }
 )
 

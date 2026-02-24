@@ -27,6 +27,7 @@ const transactionApi = apiClient.injectEndpoints({
             };
          },
          providesTags: ["transactions"],
+         keepUnusedDataFor: 300,
       }),
       duplicateTransaction: builder.mutation<void, string>({
          query: (id) => ({

@@ -15,14 +15,14 @@ import userRouter from "./routes/user.routes.js"
 import { apiLimiter } from "./utils/api-limitter.js"
 dotenv.config()
 const app = express()
+app.use(cookieParser())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
 app.use(
    cors({
       origin: Env.FRONTEND_ORIGIN,
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
       credentials: true,
    })
 );

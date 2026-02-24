@@ -10,6 +10,7 @@ const ReportTable = () => {
    });
 
    const { data, isFetching } = useGetAllReportsQuery(filter);
+   console.log("data" + data?.reports)
 
    const pagination = {
       totalItems: data?.pagination?.totalCount || 0,
@@ -36,6 +37,7 @@ const ReportTable = () => {
          pagination={pagination}
          onPageChange={handlePageChange}
          onPageSizeChange={handlePageSizeChange}
+         selection={true}
       />
    );
 };

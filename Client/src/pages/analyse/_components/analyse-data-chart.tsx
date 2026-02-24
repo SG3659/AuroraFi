@@ -55,7 +55,7 @@ const AnalyseDataChart: React.FC<PropsType> = (props) => {
    }
 
    return (
-      <Card className="!shadow-none border-1 border-gray-200 !pt-0">
+      <Card className="!shadow-none border-1 border-gray-200 !pb-3 !pt-0">
          <CardHeader
             className="flex  items-stretch !space-y-0 border-b border-gray-200 !p-0 pr-1 flex-row"
          >
@@ -105,7 +105,7 @@ const AnalyseDataChart: React.FC<PropsType> = (props) => {
                >
                   <AreaChart data={chartData || []}>
                      <defs>
-                        <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
+                        <linearGradient id="incomeGradient" x1="1" y1="0" x2="0" y2="1">
                            <stop offset="5%" stopColor={COLORS[0]} stopOpacity={1.0} />
                            <stop offset="95%" stopColor={COLORS[0]} stopOpacity={0.1} />
                         </linearGradient>

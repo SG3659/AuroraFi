@@ -10,8 +10,9 @@ export const reportColumns: ColumnDef<ReportType>[] = [
       size: 150,
       cell: ({ row }) => {
          const period = row.getValue("period") as string;
+         console.log(period)
          return (
-            <div className="flex items-center gap-2 lg:!w-10">
+            <div className="flex items-center gap-2 ">
                <Clock className="h-3.5 w-3.5 opacity-50 shrink-0" />
                <span>{period}</span>
             </div>
@@ -55,20 +56,20 @@ export const reportColumns: ColumnDef<ReportType>[] = [
       },
       filterFn: (row, id, value) => value.includes(row.getValue(id)),
    },
-   {
-      id: "actions",
-      header: "Actions",
-      size: 100,
-      cell: () => (
-         <div className="flex gap-1">
-            <Button size="sm" variant="outline" className="font-normal">
-               <RefreshCw className="h-4 w-4" />
-               Resend
-            </Button>
-            <div></div>
-         </div>
-      ),
-   },
+   // {
+   //    id: "actions",
+   //    header: "Actions",
+   //    size: 100,
+   //    cell: () => (
+   //       <div className="flex gap-1">
+   //          <Button size="sm" variant="outline" className="font-normal">
+   //             <RefreshCw className="h-4 w-4" />
+   //             Resend
+   //          </Button>
+   //          <div></div>
+   //       </div>
+   //    ),
+   // },
 
    {
       id: "-",

@@ -56,10 +56,9 @@ export const refreshTokenController = asyncHandler(async (req: Request, res: Res
    const { accessToken, newRefreshToken, tokenExpiresAt, refreshExpiresAt } = await refereshTokenService(refreshToken);
    return res
       .status(HTTPSTATUS.OK)
-      .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "none" })
-      .cookie("access", accessToken, { httpOnly: true, secure: true, sameSite: "none" })
+      .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "strict" })
+      .cookie("access", accessToken, { httpOnly: true, secure: true, sameSite: "strict" })
       .json({ message: "Refresh token successfully", accessToken, refreshToken: newRefreshToken, expiresAt: tokenExpiresAt, refreshExpiresAt });
-
 })
 
 

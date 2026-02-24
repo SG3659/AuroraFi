@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/card";
 const ChartSkeleton = () => (
    <Card className="!shadow-none border-1 border-gray-100 dark:border-border !pt-0">
-      <CardHeader className="flex flex-col items-stretch !space-y-0 border-b border-gray-100 dark:border-border !p-0 pr-1 sm:flex-row">
+      <CardHeader className=" items-stretch !space-y-0 border-b border-gray-100  !p-0 pr-1 flex-row">
          <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-0 sm:py-0">
             <Skeleton className="h-6 w-48" />
             <Skeleton className="h-4 w-32 mt-1" />

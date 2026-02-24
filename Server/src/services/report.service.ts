@@ -14,24 +14,18 @@ export const getAllReportService = async (UserId: string, pagination: {
    pageSize: number;
    pageNumber: number
 }) => {
-   const transaction = await ReportModel.findOne({ userId: UserId });
-   if (transaction && !transaction.userId.equals(UserId)) {
-      throw new UnauthorizedException("Unauthorized Access");
-   }
-
-   const userId: Record<string, any> = { userId: UserId };
    const { pageNumber, pageSize } = pagination
    const skip = (pageNumber - 1) * pageSize;
-   const [report, totalCount] = await Promise.all([
+   const [reports, totalCount] = await Promise.all([
       ReportModel.find({ userId: UserId })
          .skip(skip)
          .limit(pageSize)
          .sort({ createdAt: -1 }),
-      ReportModel.countDocuments({ userId }),
+      ReportModel.countDocuments({ userId: UserId })
    ])
    const totalPages = Math.ceil(totalCount / pageSize);
    return {
-      report,
+      reports,
       pagination: {
          pageSize,
          pageNumber,
@@ -40,7 +34,6 @@ export const getAllReportService = async (UserId: string, pagination: {
          skip,
       }
    }
-
 }
 export const updateReoprtService = async (UserId: string, body: UpdateReportSettingType) => {
    const existReportSetting = await ReportSettingModel.findOne({ userId: UserId });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import DataTable from "@/components/data-table";
 import { useGetAllTransactionsQuery, useBulkDeleteTransactionMutation } from "@/api/transaction/transactionApi"
 import { _TransactionType, FilterType } from "@/@types/transaction/transactionTypes";
@@ -21,13 +21,20 @@ const TransactionTable = (props: {
    })
 
    const { debounceSearch, search, setSearch } = useDebounce(500);
-   const { data, isFetching: isFetchingData } = useGetAllTransactionsQuery({
+   const params = useMemo(() => ({
       keyword: debounceSearch,
       type: filter.type,
       recurringStatus: filter.recurringStatus,
       pageNumber: filter.pageNumber,
       pageSize: filter.pageSize,
-   });
+   }), [
+      debounceSearch,
+      filter.type,
+      filter.recurringStatus,
+      filter.pageNumber,
+      filter.pageSize
+   ])
+   const { data, isFetching: isFetchingData } = useGetAllTransactionsQuery(params);
    console.log("API Response:", data);
    // console.log("API Error:", error);
    const [bulkDeleteTransaction, { isLoading: isBulkDeleting }] =
