@@ -24,13 +24,13 @@ const otpSchema = new mongoose.Schema<OtpDocument>({
    }
 })
 
-otpSchema.pre("save", async function (next) {
+otpSchema.pre("save", async function () {
    if (this.isModified("otp")) {
       if (this.otp.toString()) {
          this.otp = await hashValue(this.otp);
       }
    }
-   next();
+
 });
 
 otpSchema.methods.compareOtp = async function (otp: string) {

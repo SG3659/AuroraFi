@@ -43,13 +43,12 @@ const userSchema = new mongoose.Schema<IUser>({
    { timestamps: true }
 )
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
    if (this.isModified("password")) {
       if (this.password) {
          this.password = await hashValue(this.password);
       }
    }
-   next();
 });
 // this is use so any by chance password would get expose 
 userSchema.methods.omitPassword = function (): Omit<IUser, "password"> {

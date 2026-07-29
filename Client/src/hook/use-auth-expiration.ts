@@ -25,9 +25,9 @@ const useAuthExpiration = () => {
     const refreshTimeout = setTimeout(async () => {
       try {
         const {
-          newRefreshToken,
-          newExpiresAt,
-          newRefreshExpiresAt,
+          refreshToken: newRefreshToken,
+          expiresAt: newExpiresAt,
+          refreshExpiresAt: newRefreshExpiresAt,
         } = await refreshExpire({}).unwrap();
 
         dispatch(
