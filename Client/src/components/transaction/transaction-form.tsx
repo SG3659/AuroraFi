@@ -195,7 +195,7 @@ const TransactionForm = (props: {
                                     id={_TransactionType.INCOME}
                                     className="!border-primary"
                                  />
-                                 Income
+                                 <span>Income</span>
                               </label>
 
                               <label
@@ -214,7 +214,7 @@ const TransactionForm = (props: {
                                     id={_TransactionType.EXPENSE}
                                     className="!border-primary"
                                  />
-                                 Expense
+                                 <span>Expense</span>
                               </label>
                            </RadioGroup>
                            <FormMessage />
