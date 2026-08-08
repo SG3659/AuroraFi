@@ -92,7 +92,7 @@ export const oauthLoginService = async (body: oauthSchemaType) => {
    const existingUser = await UserModel.findOne({ email });
    if (existingUser) {
       const [tokens, reportSetting] = await Promise.all([
-         generateRefreshAndAccessToken(existingUser.id),
+         accessJwtToken(existingUser.id),
          ReportSettingModel.findOne(
             { userId: existingUser.id },
             { _id: 1, frequency: 1, isEnabled: 1 }
@@ -101,9 +101,7 @@ export const oauthLoginService = async (body: oauthSchemaType) => {
       return {
          user: existingUser.omitPassword(),
          accessToken: tokens.accessToken,
-         refreshToken: tokens.refreshToken,
          expiresAt: tokens.tokenExpiresAt,
-         refreshExpireAt: tokens.refreshExpiresAt,
          reportSetting
       };
    }
@@ -148,16 +146,14 @@ export const oauthLoginService = async (body: oauthSchemaType) => {
          await createdReportSetting.save({ session });
          return { newUser: createdUser, reportSetting: createdReportSetting };
       })
-      const { refreshToken,
+      const {
          accessToken,
          tokenExpiresAt,
-         refreshExpiresAt } = await generateRefreshAndAccessToken(newUser.id);
+      } = accessJwtToken(newUser.id);
       return {
          user: newUser.omitPassword(),
          accessToken,
-         refreshToken,
          expiresAt: tokenExpiresAt,
-         refreshExpireAt: refreshExpiresAt,
          reportSetting
       };
 
@@ -189,8 +185,7 @@ export const otpVerifyService = async (body: otpSchemaType) => {
       throw new NotFoundException("User not found");
    }
 
-   const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id);
-
+   const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
    await OtpModel.findOneAndDelete({ email });
 
 
@@ -202,50 +197,48 @@ export const otpVerifyService = async (body: otpSchemaType) => {
    return {
       user: user.omitPassword(),
       accessToken,
-      refreshToken,
       expiresAt: tokenExpiresAt,
-      refreshExpireAt: refreshExpiresAt,
       reportSetting
    };
 }
 
-export const refereshTokenService = async (incomingRefreshToken: string) => {
-   //veerify refresh token
-   // 
-   try {
-      const decodedToken = jwt.verify(incomingRefreshToken, Env.JWT_REFRESH_SECRET) as JwtPayload;
-      const user = await UserModel.findById(decodedToken?.userId).select("-password");
-      if (!user) {
-         throw new NotFoundException("User not found");
-      }
-      if (incomingRefreshToken !== user.resetToken) {
-         throw new UnauthorizedException("refreshToken mismatch")
-      }
-      const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id)
-      return { accessToken: accessToken, newRefreshToken: refreshToken }
+// export const refereshTokenService = async (incomingRefreshToken: string) => {
+//    //veerify refresh token
+//    // 
+//    try {
+//       const decodedToken = jwt.verify(incomingRefreshToken, Env.JWT_REFRESH_SECRET) as JwtPayload;
+//       const user = await UserModel.findById(decodedToken?.userId).select("-password");
+//       if (!user) {
+//          throw new NotFoundException("User not found");
+//       }
+//       if (incomingRefreshToken !== user.resetToken) {
+//          throw new UnauthorizedException("refreshToken mismatch")
+//       }
+//       const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id)
+//       return { accessToken: accessToken, newRefreshToken: refreshToken }
 
-   } catch (error) {
-      throw new InternalServerException("Could not refresh token")
-   }
+//    } catch (error) {
+//       throw new InternalServerException("Could not refresh token")
+//    }
 
-}
+// }
 // generate refresh and access token
-const generateRefreshAndAccessToken = async (userId: string) => {
-   try {
-      const user = await UserModel.findById(userId)
-      if (!user) {
-         throw new NotFoundException("User not found");
-      }
-      const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
-      const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
-      user.resetToken = refreshToken;
-      await user.save({ validateBeforeSave: false });
-      return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
-   }
-   catch (error) {
-      throw error;
-   }
-}
+// const generateRefreshAndAccessToken = async (userId: string) => {
+//    try {
+//       const user = await UserModel.findById(userId)
+//       if (!user) {
+//          throw new NotFoundException("User not found");
+//       }
+//       const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
+//       const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
+//       user.resetToken = refreshToken;
+//       await user.save({ validateBeforeSave: false });
+//       return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
+//    }
+//    catch (error) {
+//       throw error;
+//    }
+// }
 
 export const logoutService = async (userId: string) => {
    const user = await UserModel.findById(userId);

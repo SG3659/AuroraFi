@@ -3,7 +3,7 @@ import { asyncHandler } from "../middleware/asyncHandler.middleware.js";
 import { HTTPSTATUS } from "../config/http.config.js";
 import { registerSchema, loginSchema, oauthSchema, updatePasswordSchema } from "../validators/auth.validator.js";
 import { otpSchema } from "../validators/otp.validator.js";
-import { registerService, loginService, oauthLoginService, refereshTokenService, logoutService, deleteAccountService, updatePasswordService, otpVerifyService } from "../services/auth.service.js";
+import { registerService, loginService, oauthLoginService,  logoutService, deleteAccountService, updatePasswordService, otpVerifyService } from "../services/auth.service.js";
 export const registerController = asyncHandler(
    async (req: Request, res: Response) => {
       const body = registerSchema.parse(req.body);
@@ -34,13 +34,12 @@ export const oauthLoginController = asyncHandler(async (req: Request, res: Respo
       secure: true,
       sameSite: "none",
    }
-   const { refreshToken, accessToken, expiresAt, refreshExpireAt, user, reportSetting } = await oauthLoginService(data)
+   const {  accessToken, expiresAt,  user, reportSetting } = await oauthLoginService(data)
    return res
       .status(HTTPSTATUS.OK)
-      .cookie("refresh", refreshToken, options)
       .cookie("access", accessToken, options)
       .json({
-         message: "User logged in successfully", accessToken, refreshToken, expiresAt, refreshExpireAt, user, reportSetting
+         message: "User logged in successfully", accessToken,  expiresAt,  user, reportSetting
       });
 })
 export const otpVerifyController = asyncHandler(async (req: Request, res: Response) => {
@@ -55,29 +54,27 @@ export const otpVerifyController = asyncHandler(async (req: Request, res: Respon
       sameSite: "none",
    }
    const { accessToken,
-      refreshToken,
       expiresAt,
-      refreshExpireAt, user, reportSetting } = await otpVerifyService(data)
+       user, reportSetting } = await otpVerifyService(data)
    return res
       .status(HTTPSTATUS.OK)
-      .cookie("refresh", refreshToken, options)
       .cookie("access", accessToken, options)
       .json({
-         message: "User logged in successfully", accessToken, refreshToken, expiresAt, refreshExpireAt, user, reportSetting
+         message: "User logged in successfully", accessToken,  expiresAt, user, reportSetting
       });
 })
 
-export const refreshTokenController = asyncHandler(async (req: Request, res: Response) => {
-   const refreshToken = req.cookies?.refresh;
-   if (!refreshToken) {
-      return res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: "No refresh token provided" });
-   }
-   const { accessToken, newRefreshToken } = await refereshTokenService(refreshToken);
-   return res
-      .status(HTTPSTATUS.OK)
-      .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
-      .json({ message: "Refresh token successfully", accessToken });
-})
+// export const refreshTokenController = asyncHandler(async (req: Request, res: Response) => {
+//    const refreshToken = req.cookies?.refresh;
+//    if (!refreshToken) {
+//       return res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: "No refresh token provided" });
+//    }
+//    const { accessToken, newRefreshToken } = await refereshTokenService(refreshToken);
+//    return res
+//       .status(HTTPSTATUS.OK)
+//       .cookie("refresh", newRefreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 24 * 60 * 60 * 1000 })
+//       .json({ message: "Refresh token successfully", accessToken });
+// })
 
 
 
