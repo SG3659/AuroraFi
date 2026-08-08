@@ -51,7 +51,7 @@ export const getAllTransactionByidController = asyncHandler(async (req: Request,
    const UserId = req.auth?._id;
    const transactionId = transactionIdSchema.parse(req.params.id)
    const result = await getTransactionByIdService(UserId, transactionId)
-   res.status(HTTPSTATUS.OK).json({ message: "Transaction fetched successfully", data: result })
+   res.status(HTTPSTATUS.OK).json({ message: "Transaction fetched successfully", transaction: result })
 })
 
 export const duplicateTransactionController = asyncHandler(
