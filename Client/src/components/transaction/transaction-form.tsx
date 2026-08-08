@@ -97,6 +97,7 @@ const TransactionForm = (props: {
       { skip: !transactionId }
    );
    const editData = data?.transaction;
+   console.log("Edit Data:", editData);
    const [createTransaction, { isLoading: isCreating }] = useCreateTransactionMutation()
    const [updateTransaction, { isLoading: isUpdating }] = useUpdateTransactionMutation()
    useEffect(() => {

@@ -88,4 +88,12 @@ const transactionApi = apiClient.injectEndpoints({
    })
 })
 
-export const { useGetAllTransactionsQuery, useDeleteTransactionMutation, useDuplicateTransactionMutation, useBulkDeleteTransactionMutation, useCreateTransactionMutation, useUpdateTransactionMutation, useGetSingleTransactionQuery, useBulkImportTransactionMutation } = transactionApi
+export const {
+   useGetAllTransactionsQuery,
+   useDeleteTransactionMutation,
+   useDuplicateTransactionMutation,
+   useBulkDeleteTransactionMutation,
+   useCreateTransactionMutation,
+   useUpdateTransactionMutation,
+   useGetSingleTransactionQuery,
+   useBulkImportTransactionMutation } = transactionApi
