@@ -31,6 +31,7 @@ const userSlice = createSlice({
       },
       logout: (state) => {
          // state.refreshToken = null;
+         state.accessToken = null;
          state.expiresAt = null;
          // state.refreshExpireAt = null;
          state.user = null;
