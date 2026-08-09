@@ -92,7 +92,8 @@ export const oauthLoginService = async (body: oauthSchemaType) => {
    const existingUser = await UserModel.findOne({ email });
    if (existingUser) {
       const [tokens, reportSetting] = await Promise.all([
-         accessJwtToken(existingUser.id),
+         accessJwtToken({ userId: existingUser.id }
+         ),
          ReportSettingModel.findOne(
             { userId: existingUser.id },
             { _id: 1, frequency: 1, isEnabled: 1 }
@@ -149,7 +150,7 @@ export const oauthLoginService = async (body: oauthSchemaType) => {
       const {
          accessToken,
          tokenExpiresAt,
-      } = accessJwtToken(newUser.id);
+      } = accessJwtToken({ userId: newUser.id });
       return {
          user: newUser.omitPassword(),
          accessToken,
