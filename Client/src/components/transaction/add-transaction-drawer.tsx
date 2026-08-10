@@ -25,7 +25,7 @@ const AddTransactionDrawer = () => {
                Add Transaction
             </Button>
          </DrawerTrigger>
-         <DrawerContent className="max-h-screen w-full max-w-md   ">
+         <DrawerContent className="h-full  max-w-md   ">
             <DrawerHeader className="relative">
                <div>
                   <DrawerTitle className="text-xl font-semibold">
