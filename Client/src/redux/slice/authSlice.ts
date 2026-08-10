@@ -5,6 +5,7 @@ const initialState: AuthState = {
    expiresAt: null,
    user: null,
    reportSetting: null,
+   profilePicture: null
 };
 const userSlice = createSlice({
    name: "auth",
@@ -17,6 +18,7 @@ const userSlice = createSlice({
          // state.refreshExpireAt = action.payload.refreshExpireAt;
          state.user = action.payload.user;
          state.reportSetting = action.payload.reportSetting;
+         state.profilePicture = action.payload.profilePicture
       },
       updateCredentials: (state, action) => {
          const { expiresAt, user, reportSetting } = action.payload;
@@ -36,6 +38,7 @@ const userSlice = createSlice({
          // state.refreshExpireAt = null;
          state.user = null;
          state.reportSetting = null;
+         state.profilePicture = null;
       },
    }
 })

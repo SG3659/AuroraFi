@@ -1,4 +1,4 @@
-import { LogOut, Settings, Moon, Sun } from "lucide-react"
+import { LogOut, Settings } from "lucide-react"
 import {
    Avatar,
    AvatarFallback,

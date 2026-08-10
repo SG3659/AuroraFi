@@ -3,6 +3,7 @@ export interface AuthState {
   expiresAt: number | null;
   user: User | null;
   reportSetting: ReportSetting | null;
+  profilePicture: string | null;
 }
 
 export interface User {
