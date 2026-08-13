@@ -5,6 +5,7 @@ import Transactions from "@/pages/transections";
 import Reports from "@/pages/reports"
 import Dashboard from "@/pages/dashboard";
 import Analyse from "@/pages/analyse"
+import Account from "@/pages/settings/account";
 export const authRoutes = [
       { path: AUTH_ROUTES.SIGN_IN, element: <SignIn /> },
       { path: AUTH_ROUTES.SIGN_UP, element: <SignUp /> },
@@ -15,6 +16,9 @@ export const protectedRoutes = [
       { path: PROTECTED_ROUTES.TRANSACTIONS, element: <Transactions /> },
       { path: PROTECTED_ROUTES.REPORTS, element: <Reports /> },
       { path: PROTECTED_ROUTES.ANALYSE, element: <Analyse /> },
-
+      {
+            path: PROTECTED_ROUTES.SETTINGS,
+            element: <Account />,
+      }
 
 ]

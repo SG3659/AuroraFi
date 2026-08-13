@@ -13,7 +13,7 @@ const Navbar = () => {
    const { user } = useTypedSelector((state) => state.auth);
    console.log("User in Navbar:", user);
    const [isOpen, setIsOpen] = useState(false);
-      
+
    const routes = [
       {
          href: PROTECTED_ROUTES.OVERVIEW,
@@ -27,10 +27,6 @@ const Navbar = () => {
          href: PROTECTED_ROUTES.REPORTS,
          label: "Reports",
       },
-      // {
-      //    href: PROTECTED_ROUTES.SETTINGS,
-      //    label: "Settings",
-      // },
    ];
    return (
       <>
@@ -110,6 +106,7 @@ const Navbar = () => {
                   {/* Right side - User actions */}
                   <div className="flex items-center space-x-4">
                      <UserNav
+
                         userName={user?.name || ""}
                         email={user?.email || ""}
                         profilePicture={user?.profilePicture || ""}
