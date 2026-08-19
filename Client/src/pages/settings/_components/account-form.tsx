@@ -113,8 +113,10 @@ const AccountForm = () => {
                         type="file"
                         accept="image/*"
                         onChange={handleAvatarChange}
-                        className="max-w-[250px] cursor-pointer hover:border-2  hover:shadow-md hover:shadow-gray-400/20"
-                     />
+                        className="max-w-[250px] px-1 h-9 cursor-pointer text-sm file:mr-2 
+            file:rounded file:border-0 file:bg-primary file:px-3 file:py-px
+             file:text-sm file:font-medium file:text-white 
+             hover:file:bg-primary/90"                     />
                      <p className="text-xs text-muted-foreground">
                         Recommended: Square JPG, PNG, at least 300x300px.
                      </p>

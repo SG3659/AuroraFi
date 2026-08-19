@@ -212,3 +212,19 @@ export interface BulkTransactionType {
 export interface BulkImportTransactionPayload {
    transactions: BulkTransactionType[];
 }
+
+export interface AIScanReceiptData {
+   title: string;
+   amount: number;
+   date: string;
+   description: string;
+   category: string;
+   paymentMethod: string;
+   type: "INCOME" | "EXPENSE";
+   receiptUrl: string;
+}
+
+export interface AIScanReceiptResponse {
+   message: string;
+   data: AIScanReceiptData;
+}

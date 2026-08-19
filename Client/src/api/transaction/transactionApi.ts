@@ -1,6 +1,6 @@
 import apiClient from "@/api/rtkquery/apiClent";
 
-import { GetAllTransactionParams, GetAllTransactionResponse, CreateTransactionBody, UpdateTransactionPayload, GetSingleTransactionResponse, BulkImportTransactionPayload } from "@/@types/transaction/transactionTypes";
+import { GetAllTransactionParams, GetAllTransactionResponse, CreateTransactionBody, UpdateTransactionPayload, GetSingleTransactionResponse, BulkImportTransactionPayload, AIScanReceiptResponse } from "@/@types/transaction/transactionTypes";
 
 const transactionApi = apiClient.injectEndpoints({
    endpoints: (builder) => ({
@@ -85,6 +85,13 @@ const transactionApi = apiClient.injectEndpoints({
             invalidatesTags: ["transactions"],
          }
       ),
+      scanReceipt: builder.mutation<AIScanReceiptResponse, FormData>({
+         query: (data) => ({
+            url: `/transaction/scan-receipt`,
+            method: "POST",
+            body: data,
+         })
+      }),
    })
 })
 
@@ -96,4 +103,6 @@ export const {
    useCreateTransactionMutation,
    useUpdateTransactionMutation,
    useGetSingleTransactionQuery,
-   useBulkImportTransactionMutation } = transactionApi
+   useBulkImportTransactionMutation,
+   useScanReceiptMutation
+} = transactionApi
