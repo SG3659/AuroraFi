@@ -216,7 +216,6 @@ export const scanReceiptService = async (file: Express.Multer.File | undefined) 
    if (!file) throw new BadRequestException("could not process file ");
    try {
       if (!file.path) throw new BadRequestException("could not process file ");
-      console.log(file.path)
       const imageData = await axios.get(file.path, { responseType: 'arraybuffer' });
       const base64Image = Buffer.from(imageData.data, 'binary').toString('base64');
       if (!base64Image) throw new BadRequestException("could not process file ");

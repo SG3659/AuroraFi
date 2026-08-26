@@ -87,7 +87,6 @@ export const loginService = async (body: loginSchemaType) => {
       await otpRecord.save();
    }
    }
-}
 export const oauthLoginService = async (body: oauthSchemaType) => {
    const { email, name, photoUrl } = body;
    const existingUser = await UserModel.findOne({ email });
@@ -219,28 +218,28 @@ export const refereshTokenService = async (incomingRefreshToken: string) => {
       const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id)
       return { accessToken: accessToken, newRefreshToken: refreshToken, tokenExpiresAt, refreshExpiresAt }
 
-//    } catch (error) {
-//       throw new InternalServerException("Could not refresh token")
-//    }
+   } catch (error) {
+      throw new InternalServerException("Could not refresh token")
+   }
 
-// }
-// generate refresh and access token
-// const generateRefreshAndAccessToken = async (userId: string) => {
-//    try {
-//       const user = await UserModel.findById(userId)
-//       if (!user) {
-//          throw new NotFoundException("User not found");
-//       }
-//       const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
-//       const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
-//       user.resetToken = refreshToken;
-//       await user.save({ validateBeforeSave: false });
-//       return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
-//    }
-//    catch (error) {
-//       throw error;
-//    }
-// }
+}
+//generate refresh and access token
+const generateRefreshAndAccessToken = async (userId: string) => {
+   try {
+      const user = await UserModel.findById(userId)
+      if (!user) {
+         throw new NotFoundException("User not found");
+      }
+      const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
+      const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
+      user.resetToken = refreshToken;
+      await user.save({ validateBeforeSave: false });
+      return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
+   }
+   catch (error) {
+      throw error;
+   }
+}
 
 export const logoutService = async (userId: string) => {
    await UserModel.findByIdAndUpdate(

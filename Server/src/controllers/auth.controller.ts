@@ -3,7 +3,7 @@ import { asyncHandler } from "../middleware/asyncHandler.middleware.js";
 import { HTTPSTATUS } from "../config/http.config.js";
 import { registerSchema, loginSchema, oauthSchema, updatePasswordSchema } from "../validators/auth.validator.js";
 import { otpSchema } from "../validators/otp.validator.js";
-import { registerService, loginService, oauthLoginService,  logoutService, deleteAccountService, updatePasswordService, otpVerifyService } from "../services/auth.service.js";
+import { registerService, loginService, oauthLoginService, logoutService, deleteAccountService, updatePasswordService, otpVerifyService, refereshTokenService } from "../services/auth.service.js";
 export const registerController = asyncHandler(
    async (req: Request, res: Response) => {
       const body = registerSchema.parse(req.body);
@@ -25,7 +25,7 @@ export const loginController = asyncHandler(async (req: Request, res: Response) 
 })
 export const oauthLoginController = asyncHandler(async (req: Request, res: Response) => {
    const data = oauthSchema.parse(req.body);
-    const options: {
+   const options: {
       httpOnly: boolean,
       secure: boolean,
       sameSite: "none"
@@ -34,12 +34,12 @@ export const oauthLoginController = asyncHandler(async (req: Request, res: Respo
       secure: true,
       sameSite: "none",
    }
-   const {  accessToken, expiresAt,  user, reportSetting } = await oauthLoginService(data)
+   const { accessToken, expiresAt, user, reportSetting } = await oauthLoginService(data)
    return res
       .status(HTTPSTATUS.OK)
       .cookie("access", accessToken, options)
       .json({
-         message: "User logged in successfully", accessToken,  expiresAt,  user, reportSetting
+         message: "User logged in successfully", accessToken, expiresAt, user, reportSetting
       });
 })
 export const otpVerifyController = asyncHandler(async (req: Request, res: Response) => {
@@ -55,12 +55,12 @@ export const otpVerifyController = asyncHandler(async (req: Request, res: Respon
    }
    const { accessToken,
       expiresAt,
-       user, reportSetting } = await otpVerifyService(data)
+      user, reportSetting } = await otpVerifyService(data)
    return res
       .status(HTTPSTATUS.OK)
       .cookie("access", accessToken, options)
       .json({
-         message: "User logged in successfully", accessToken,  expiresAt, user, reportSetting
+         message: "User logged in successfully", accessToken, expiresAt, user, reportSetting
       });
 })
 

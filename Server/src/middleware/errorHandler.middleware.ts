@@ -34,7 +34,6 @@ const multerErrorHandler = (res: Response, error: MulterError) => {
 
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next): any => {
-   console.log("Error occured in path", req.path, "Error", err)
    if (err instanceof ZodError) {
       return formatZodError(res, err)
    }
