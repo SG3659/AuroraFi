@@ -1,4 +1,4 @@
-import type { registerSchemaType, loginSchemaType, updatePasswordType } from "../validators/auth.validator.js"
+import type { registerSchemaType, loginSchemaType, oauthSchemaType, updatePasswordType } from "../validators/auth.validator.js"
 import UserModel from "../model/user.model.js";
 import OtpModel from "../model/otp.model.js";
 import { UnauthorizedException, NotFoundException, InternalServerException } from "../utils/app-error.js";
@@ -13,7 +13,7 @@ import { Env } from "../config/env.config.js";
 import { sendOtpEmail } from "../mailers/otp.mailer.js";
 import { generateOtp } from "../utils/otp-generator.js";
 import type { otpSchemaType } from "../validators/otp.validator.js";
-import { any } from "zod";
+import bcrypt from "bcrypt";
 export const registerService = async (body: registerSchemaType) => {
    const { email } = body
 
@@ -86,6 +86,86 @@ export const loginService = async (body: loginSchemaType) => {
       });
       await otpRecord.save();
    }
+   }
+}
+export const oauthLoginService = async (body: oauthSchemaType) => {
+   const { email, name, photoUrl } = body;
+   const existingUser = await UserModel.findOne({ email });
+   if (existingUser) {
+      const [tokens, reportSetting] = await Promise.all([
+         accessJwtToken({ userId: existingUser.id }
+         ),
+         ReportSettingModel.findOne(
+            { userId: existingUser.id },
+            { _id: 1, frequency: 1, isEnabled: 1 }
+         ).lean()
+      ])
+      return {
+         user: existingUser.omitPassword(),
+         accessToken: tokens.accessToken,
+         expiresAt: tokens.tokenExpiresAt,
+         reportSetting
+      };
+   }
+
+   const session = await mongoose.startSession();
+   try {
+      //Double-check user existence inside session to prevent race conditions
+      const { newUser, reportSetting } = await session.withTransaction(async () => {
+         const userInTx = await UserModel.findOne({ email }).session(session);
+         if (userInTx) {
+            const reportSetting = await ReportSettingModel.findOne(
+               { userId: userInTx.id },
+               { _id: 1, frequency: 1, isEnabled: 1 }
+            ).session(session).lean()
+
+            return { newUser: userInTx, reportSetting };
+         }
+
+         const generatedPassword = (
+            Math.random().toString(36).slice(-4) +
+            Math.random().toString(36).toUpperCase().slice(-4) +
+            "!_"
+         ).split('').sort(() => Math.random() - 0.5).join('');
+         const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+         const createdUser = new UserModel({
+            name,
+            email,
+            password: hashedPassword,
+            profilePicture: photoUrl || null,
+         })
+         await createdUser.save({ session });
+
+         const createdReportSetting = new ReportSettingModel({
+            userId: createdUser._id,
+            frequency: ReportFrequencyEnum.MONTHLY,
+            isEnabled: true,
+            nextReportDate: calculateNextReportDate(),
+            lastSentDate: null,
+
+         });
+
+         await createdReportSetting.save({ session });
+         return { newUser: createdUser, reportSetting: createdReportSetting };
+      })
+      const {
+         accessToken,
+         tokenExpiresAt,
+      } = accessJwtToken({ userId: newUser.id });
+      return {
+         user: newUser.omitPassword(),
+         accessToken,
+         expiresAt: tokenExpiresAt,
+         reportSetting
+      };
+
+   } catch (error) {
+      throw error
+   }
+   finally {
+      session.endSession();
+   }
+
 }
 export const otpVerifyService = async (body: otpSchemaType) => {
    const { email, otp } = body;
@@ -107,8 +187,7 @@ export const otpVerifyService = async (body: otpSchemaType) => {
       throw new NotFoundException("User not found");
    }
 
-   const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id);
-
+   const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
    await OtpModel.findOneAndDelete({ email });
 
 
@@ -120,9 +199,7 @@ export const otpVerifyService = async (body: otpSchemaType) => {
    return {
       user: user.omitPassword(),
       accessToken,
-      refreshToken,
       expiresAt: tokenExpiresAt,
-      refreshExpireAt: refreshExpiresAt,
       reportSetting
    };
 }
@@ -142,28 +219,28 @@ export const refereshTokenService = async (incomingRefreshToken: string) => {
       const { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt } = await generateRefreshAndAccessToken(user.id)
       return { accessToken: accessToken, newRefreshToken: refreshToken, tokenExpiresAt, refreshExpiresAt }
 
-   } catch (error) {
-      throw new InternalServerException("Could not refresh token")
-   }
+//    } catch (error) {
+//       throw new InternalServerException("Could not refresh token")
+//    }
 
-}
+// }
 // generate refresh and access token
-const generateRefreshAndAccessToken = async (userId: string) => {
-   try {
-      const user = await UserModel.findById(userId)
-      if (!user) {
-         throw new NotFoundException("User not found");
-      }
-      const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
-      const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
-      user.resetToken = refreshToken;
-      await user.save({ validateBeforeSave: false });
-      return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
-   }
-   catch (error) {
-      throw error;
-   }
-}
+// const generateRefreshAndAccessToken = async (userId: string) => {
+//    try {
+//       const user = await UserModel.findById(userId)
+//       if (!user) {
+//          throw new NotFoundException("User not found");
+//       }
+//       const { refreshToken, refreshExpiresAt } = refreshJwtToken({ userId: user.id });
+//       const { accessToken, tokenExpiresAt } = accessJwtToken({ userId: user.id });
+//       user.resetToken = refreshToken;
+//       await user.save({ validateBeforeSave: false });
+//       return { refreshToken, accessToken, tokenExpiresAt, refreshExpiresAt }
+//    }
+//    catch (error) {
+//       throw error;
+//    }
+// }
 
 export const logoutService = async (userId: string) => {
    await UserModel.findByIdAndUpdate(

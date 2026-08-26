@@ -9,6 +9,7 @@ const transactionRouter = Router()
 transactionRouter.post("/create", AuthMiddleware, createTransactionController);
 transactionRouter.post(
    "/scan-receipt",
+   AuthMiddleware,
    upload.single("receipt"),
    scanReceiptController
 );
