@@ -18,12 +18,6 @@ export const createTransactionController = asyncHandler(
 export const getAllTransactionController = asyncHandler(
    async (req: Request, res: Response) => {
       const UserId = req.auth?._id;
-      // const filters = {
-      //    keyword: req.query.keyword as string | undefined,
-      //    type: req.query.type as keyof typeof TransactionTypeEnum | undefined,
-      //    recurringStatus: req.query.recurringStatus as | "RECURRING" | "NON_RECURRING" | undefined,
-      // }
-
       const keyword = req.query.keyword as string | undefined;
       const type = req.query.type as keyof typeof TransactionTypeEnum | undefined;
       const recurringStatus = req.query.recurringStatus as | "RECURRING" | "NON_RECURRING" | undefined;
