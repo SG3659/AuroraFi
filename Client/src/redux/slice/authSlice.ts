@@ -1,0 +1,42 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { AuthState } from "@/api/auth/authTyes";
+const initialState: AuthState = {
+   accessToken: null,
+   expiresAt: null,
+   user: null,
+   reportSetting: null,
+   profilePicture: null
+};
+const userSlice = createSlice({
+   name: "auth",
+   initialState,
+   reducers: {
+      setCredentials: (state, action) => {
+         state.accessToken = action.payload.accessToken;
+         state.expiresAt = action.payload.expiresAt;
+         state.user = action.payload.user;
+         state.reportSetting = action.payload.reportSetting;
+         state.profilePicture = action.payload.profilePicture
+      },
+      updateCredentials: (state, action) => {
+         const { expiresAt, user, accessToken, profilePicture } = action.payload;
+
+         if (expiresAt !== undefined) state.expiresAt = expiresAt;
+         if (user !== undefined) state.user = { ...state.user, ...user };
+         if (accessToken !== undefined)
+            state.reportSetting = { ...state.reportSetting, ...accessToken };
+         if (profilePicture !== undefined) state.profilePicture = profilePicture;
+      },
+      logout: (state) => {
+         state.accessToken = null;
+         state.expiresAt = null;
+         state.user = null;
+         state.reportSetting = null;
+         state.profilePicture = null;
+      },
+   }
+})
+
+export const { setCredentials, updateCredentials, logout } = userSlice.actions;
+
+export default userSlice.reducer;
